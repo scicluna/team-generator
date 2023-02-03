@@ -145,7 +145,7 @@ function generateIntern({name, id, email, school}){
 
 function generateHTML(team){
     const html = writeHTML(team)
-    writeToFile("index.html", html)
+    writeToFile("./dist/index.html", html)
 }
 
 function writeHTML(team){
@@ -163,12 +163,12 @@ function writeHTML(team){
       crossorigin="anonymous" />
     <title>Team Members</title>
   </head>
-  <body>
+  <body class="bg-warning-subtle">
     <div class="d-flex flex-column vh-100">
         <nav class="navbar bg-body-tertiary container-fluid d-flex justify-content-center bg-danger-subtle">
             <h1>My Team</h1>
         </nav>
-        <main class="d-flex p-2 flex-wrap align-content-center justify-content-center bg-warning-subtle h-100">
+        <main class="d-flex p-2 flex-wrap align-content-center justify-content-center ">
             ${buildCards(team)}
         </main>
     </div>
@@ -184,6 +184,7 @@ function writeToFile(fileName, content){
 
 function buildCards(team){
     const cards = team.map(member=>{
+
         let special;
         let specialDesc;
         let specialTag;
@@ -199,7 +200,7 @@ function buildCards(team){
             special = member.getGithub()
             specialTag = "a"
             specialDesc = "Github:"
-            specialLink = `github.com/${special}`
+            specialLink = `https://github.com/${special}`
             specialStyle = 'link-primary'
             specialTarget = '_blank'
         }
