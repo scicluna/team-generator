@@ -25,4 +25,6 @@ THEN I exit the application, and the HTML is generated - DONE
 
 VIDEO TUTORIAL
 
-JEST TESTS
+JEST TESTS - DONE
+
+README

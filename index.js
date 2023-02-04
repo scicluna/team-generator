@@ -169,9 +169,9 @@ function writeHTML(team){
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <title>Team Members</title>
   </head>
-  <body class="bg-warning-subtle">
+  <body class="bg-primary">
     <div class="d-flex flex-column vh-100 align-items-center">
-        <nav class="navbar bg-body-tertiary container-fluid d-flex justify-content-center bg-danger-subtle">
+        <nav class="navbar container-fluid d-flex justify-content-center bg-info opacity-25" style="border-radius: 0 0 10% 10%;">
             <h1>My Team</h1>
         </nav>
         <main class="d-flex p-2 flex-wrap align-content-center justify-content-center">
@@ -230,7 +230,7 @@ function buildCards(team){
         }
 
         return `
-        <div class="card m-4 shadow " style="width: 14rem;">
+        <div class="card m-4" style="width: 14rem; opacity: 90%;  box-shadow: 1px 2px 3px 4px rgba(0, 0, 0, 0.581)">
             <div class="card-body">
                 <h5 class="card-title">${member.getName()}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">${specialSymbol} ${member.getRole()}</h6>
@@ -240,12 +240,9 @@ function buildCards(team){
                     <${specialTag} href="${specialLink}" target="${specialTarget}" class="list-group-item">${specialDesc} <span class=${specialStyle}>${special}</span></${specialTag}>
                 </ul>
             </div>
-        </div>
-        `
+        </div>`
     })
     return cards.join("")
 }
 
-//PLAN: Spruce up the styling/html - make sure it really has everything we need
-//New color scheme (I like the card spacing)
-//Build tests
+//PLAN:
