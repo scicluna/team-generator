@@ -3,11 +3,11 @@ const inquirer = require("inquirer")
 const fs = require("fs")
 
 //Class imports
-const Employee = require("./lib/Employee")
 const Manager = require("./lib/Manager")
 const Engineer = require("./lib/Engineer")
 const Intern = require("./lib/Intern")
 
+//Question Banks
 const managerQuestions = [
     {
         type: "input",
@@ -30,16 +30,14 @@ const managerQuestions = [
         message: "What is their office number?"
     },
 ]
-
 const pickEngineervsIntern = [
     {
         type: "list",
         name: "type",
         message: "Would you like to add an Engineer or Intern?",
-        choices: ["Engineer", "Intern", "Neither"]
+        choices: ["Engineer", "Intern", "I'm done adding members"]
     }
 ]
-
 const engineerQuestions = [
     {
         type: "input",
@@ -62,7 +60,6 @@ const engineerQuestions = [
         message: "What is their github username?"
     },
 ]
-
 const internQuestions = [
     {
         type: "input",
@@ -86,13 +83,13 @@ const internQuestions = [
     },
 ]
 
+//Array of our team members
 const team = []
 
-function init(){
-    managerPrompts(managerQuestions)
-}
-init()
+//Begins our chain of questions
+managerPrompts(managerQuestions)
 
+//Prompts the user with our manager prompts, then generates the manager and pushes it into team, then continues with more prompts
 function managerPrompts(questions){
     inquirer.prompt(questions)
     .then(data=>{
@@ -101,17 +98,23 @@ function managerPrompts(questions){
     })
 }
 
+//Gives the user some choices and then asks them more prompts based on their choice. Or, it exits the program and generates the HTML
 function engineerOrIntern(questions){
     inquirer.prompt(questions)
     .then(data=>{
-        if (data.type === "Engineer") engineerPrompts(engineerQuestions)
-        if (data.type === "Intern") internPrompts(internQuestions)
-        if (data.type === "Neither") {
-            generateHTML(team)
+        switch(data.type){
+            case "Engineer": engineerPrompts(engineerQuestions)
+            break
+            case "Intern": internPrompts(internQuestions)
+            break
+            case "I'm done adding members": generateHTML(team)
+            break
+            default: break
         }
     })
 }
 
+//Prompts the user with our engineer prompts, then generates the engineer and pushes it into team, then loops back to engineerOrIntern
 function engineerPrompts(questions){
     inquirer.prompt(questions)
     .then(data=>{
@@ -120,6 +123,7 @@ function engineerPrompts(questions){
     })
 }
 
+//Prompts the user with our intern prompts, then generates the engineer and pushes it into team, then loops back to engineerOrIntern
 function internPrompts(questions){
     inquirer.prompt(questions)
     .then(data=>{
@@ -128,29 +132,30 @@ function internPrompts(questions){
     })
 }
 
+//Generates a new team member and pushes them into the team array
 function generateManager({name, id, email, office}){
     const manager = new Manager(name, id, email, office)
     team.push(manager)
 }
-
 function generateEngineer({name, id, email, github}){
     const engineer = new Engineer(name, id, email, github)
     team.push(engineer)
 }
-
 function generateIntern({name, id, email, school}){
     const intern = new Intern(name, id, email, school)
     team.push(intern)
 }
 
+//Handles our html generation and passes it in to our writeToFile function
 function generateHTML(team){
     const html = writeHTML(team)
     writeToFile("./dist/index.html", html)
 }
 
+//Returns our html frame leveraging buildCards as a helper function
 function writeHTML(team){
     return `
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -161,64 +166,77 @@ function writeHTML(team){
       rel="stylesheet"
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <title>Team Members</title>
   </head>
   <body class="bg-warning-subtle">
-    <div class="d-flex flex-column vh-100">
+    <div class="d-flex flex-column vh-100 align-items-center">
         <nav class="navbar bg-body-tertiary container-fluid d-flex justify-content-center bg-danger-subtle">
             <h1>My Team</h1>
         </nav>
-        <main class="d-flex p-2 flex-wrap align-content-center justify-content-center ">
+        <main class="d-flex p-2 flex-wrap align-content-center justify-content-center">
             ${buildCards(team)}
         </main>
     </div>
     </body>
   </html>
-    `
+        `
 }
 
+//Writes the html file
 function writeToFile(fileName, content){
     fs.writeFile(fileName, content, (err) =>
     err ? console.log(err) : console.log(`Successfully created ${fileName}`)
 )}
 
+//Builds out our team cards with html. Uses a switch and template literals to dynamically produce cards based on each team member's roles.
 function buildCards(team){
     const cards = team.map(member=>{
 
         let special;
         let specialDesc;
         let specialTag;
+        let specialSymbol;
         let specialLink = ''
         let specialStyle = ''
         let specialTarget = ''
-        if (member.getRole() == "Manager") {
-            special = member.officeNumber
-            specialTag = "li"
-            specialDesc = "Office Number:"
-        }
-        if (member.getRole() == "Engineer") { 
-            special = member.getGithub()
-            specialTag = "a"
-            specialDesc = "Github:"
-            specialLink = `https://github.com/${special}`
-            specialStyle = 'link-primary'
-            specialTarget = '_blank'
-        }
-        if (member.getRole() == "Intern") { 
-            special = member.getSchool()
-            specialTag = "li"
-            specialDesc = "School:"
 
+        switch(member.getRole()){
+            case "Manager": {
+                special = member.officeNumber
+                specialTag = "li"
+                specialDesc = "Office #:"
+                specialSymbol = `<i class="fa-solid fa-mug-hot"></i>`
+                break
+            }
+            case "Engineer": {
+                special = member.getGithub()
+                specialTag = "a"
+                specialDesc = `<i class="fa-brands fa-github"></i>`
+                specialLink = `https://github.com/${special}`
+                specialStyle = 'link-primary'
+                specialTarget = '_blank'
+                specialSymbol = `<i class="fa-solid fa-gear"></i>`
+                break
+            }
+            case "Intern" : {
+                special = member.getSchool()
+                specialTag = "li"
+                specialDesc = `<i class="fa-solid fa-school"></i>`
+                specialSymbol = `<i class="fa-sharp fa-solid fa-graduation-cap"></i>`
+                break
+            }
+            default: break
         }
 
         return `
-        <div class="card m-2" style="width: 16rem;">
+        <div class="card m-4 shadow " style="width: 14rem;">
             <div class="card-body">
                 <h5 class="card-title">${member.getName()}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">${member.getRole()}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">${specialSymbol} ${member.getRole()}</h6>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">ID: ${member.getId()}</li>
-                    <a href="mailto:${member.getEmail()}"  class="list-group-item">Email: <span class="link-primary">${member.getEmail()}</span></a>
+                    <a href="mailto:${member.getEmail()}"  class="list-group-item"><i class="fa fa-envelope""></i> <span class="link-primary">${member.getEmail()}</span></a>
                     <${specialTag} href="${specialLink}" target="${specialTarget}" class="list-group-item">${specialDesc} <span class=${specialStyle}>${special}</span></${specialTag}>
                 </ul>
             </div>
@@ -228,8 +246,6 @@ function buildCards(team){
     return cards.join("")
 }
 
-//PLAN: Sketch an HTML page in prototype
-//Use Bootstrap to style it so that we dont need a css page to make it look good
-//Grid size based on team size? How Am I going to do that? 
-//How to make it dynamic to the team size and actually listing out details from the whole team?
-//Like, I really wish I was using react now, because I feel like this would be easy.
+//PLAN: Spruce up the styling/html - make sure it really has everything we need
+//New color scheme (I like the card spacing)
+//Build tests
