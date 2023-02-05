@@ -97,13 +97,16 @@ function writeHTML(team){
         <title>Team Members</title>
     </head>
     <body class="bg-primary">
-        <div class="d-flex flex-column vh-100 align-items-center">
-            <nav class="navbar container-fluid d-flex justify-content-center bg-info opacity-25" style="border-radius: 0 0 10% 10%;">
+        <div class="d-flex flex-column align-items-center" style="position:relative; min-height:100vh; padding-bottom: 10vh;">
+            <nav class="navbar container-fluid d-flex justify-content-center bg-info opacity-25" style="border-radius: 0 0 10% 10%; height:15vh">
                 <h1>My Team</h1>
             </nav>
-            <main class="d-flex p-2 flex-wrap align-content-center justify-content-center">
+            <main class="d-flex p-4 flex-wrap justify-content-center">
                 ${buildCards(team)}
             </main>
+            <footer class="container-fluid d-flex justify-content-center align-items-center bg-info opacity-25" style="border-radius: 10% 10% 0 0; height:10vh; position: absolute; bottom: 0;">
+            <a href="https://github.com/scicluna" target="_blank" class="list-group-item"><i class="fa-brands fa-github" style="font-size:8vh;" ></i></a>
+            </footer>
         </div>
     </body>
 </html>
