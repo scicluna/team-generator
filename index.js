@@ -101,7 +101,7 @@ function writeHTML(team){
             <nav class="navbar container-fluid d-flex justify-content-center bg-info opacity-25" style="border-radius: 0 0 10% 10%; height:15vh">
                 <h1>My Team</h1>
             </nav>
-            <main class="d-flex p-4 flex-wrap justify-content-center">
+            <main class="d-flex p-4 flex-wrap justify-content-center align-items-center"style="flex: 1 1 auto">
                 ${buildCards(team)}
             </main>
             <footer class="container-fluid d-flex justify-content-center align-items-center bg-info opacity-25" style="border-radius: 10% 10% 0 0; height:10vh; position: absolute; bottom: 0;">
@@ -160,7 +160,7 @@ function buildCards(team){
         }
 
         return `
-                <div class="card m-4" style="width: 14rem; opacity: 90%;  box-shadow: 1px 2px 3px 4px rgba(0, 0, 0, 0.581)">
+                <div class="card m-4" style="width: 15rem; opacity: 90%;  box-shadow: 1px 2px 3px 4px rgba(0, 0, 0, 0.581); word-break: break-all">
                     <div class="card-body">
                         <h5 class="card-title">${member.getName()}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${specialSymbol} ${member.getRole()}</h6>
