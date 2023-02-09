@@ -25,7 +25,7 @@ Video Tutorial: https://drive.google.com/file/d/1hfZzLEOZ3eksT65B_WOa_0CJEi8nTxx
 
 Just follow the prompts and receive a beautiful HTML page displaying your team.
 
-![](./pictures/example.png)
+[![Watch the video](./pictures/example.png)](https://drive.google.com/file/d/1hfZzLEOZ3eksT65B_WOa_0CJEi8nTxxW/view?usp=sharing)
 
 ## License
 
