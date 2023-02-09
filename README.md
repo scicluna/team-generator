@@ -21,6 +21,8 @@ Download it from my github, install dependencies with npm i, and run it with nod
 
 ## Usage
 
+Video Tutorial: https://drive.google.com/file/d/1hfZzLEOZ3eksT65B_WOa_0CJEi8nTxxW/view?usp=sharing
+
 Just follow the prompts and receive a beautiful HTML page displaying your team.
 
 ![](./pictures/example.png)
